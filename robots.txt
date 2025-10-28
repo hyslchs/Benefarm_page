@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://sitcon.org/hoc/sitemap.xml
+Host: sitcon.org
