@@ -9,7 +9,6 @@ export default defineConfig({
   base: "/Benefarm_page",
   integrations: [icon()],
   vite: {
-  base: "/Benefarm_page/",
-  plugins: [tailwindcss()],
+    plugins: [tailwindcss()],
   },
 });
