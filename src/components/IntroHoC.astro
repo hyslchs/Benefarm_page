@@ -1,0 +1,133 @@
+---
+import hocImage from "@assets/img/sun-dried-coffee.png";
+import warring from "@assets/warring.svg";
+---
+
+<section class="section relative z-10 bg-white" id="intro-hoc">
+	<!-- 跑馬燈 -->
+	<div class="marquee-wrapper mb-10">
+		<div id="marquee" style={`background-image: url(${warring.src})`}></div>
+	</div>
+
+  <div class="container mx-auto px-6">
+    <div class="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+      
+      <!-- Text Content -->
+      <div class="space-y-8 order-2 lg:order-1">
+        <div>
+          <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+			  關於
+            <span class="text-[#77B65A]">咖啡</span>
+		</h2>
+          
+          <div class="space-y-6 text-lg md:text-xl text-gray-700 leading-relaxed">
+            <p>
+			是指將咖啡植物的種子（即咖啡豆）經過烘焙磨粉後沖泡溶解製成的飲料，是世界上流行範圍最為廣泛的軟性飲料之一。因其有效成分咖啡因是一種中樞神經興奮劑，人類通常會為了提神或在用餐和社交、閱讀時飲用咖啡。
+            </p>
+          </div>
+        </div>
+
+        <!-- Features List -->
+        <div class="space-y-4">
+          <h3 class="text-2xl font-semibold text-gray-900 mb-4 pt-6">喝 <span class="text-[#77B65A]">咖啡</span> 的三大益處</h3>
+          <div class="grid gap-4">
+            <div class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-[#77B65A] rounded-full mt-3 flex-shrink-0"></div>
+              <p class="text-lg text-gray-700">
+                <span class="font-semibold">提振精神</span>  咖啡因可以阻斷腺苷（會讓人感到疲倦的物質），從而提升警覺性、專注力和反應時間。
+              </p>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-[#77B65A] rounded-full mt-3 flex-shrink-0"></div>
+              <p class="text-lg text-gray-700">
+                <span class="font-semibold">抗氧化</span>  咖啡富含多酚類物質，能對抗自由基，具有抗發炎和抗氧化的作用。 
+              </p>
+            </div>
+            <div class="flex items-start gap-3">
+              <div class="w-2 h-2 bg-[#77B65A] rounded-full mt-3 flex-shrink-0"></div>
+              <p class="text-lg text-gray-700">
+                <span class="font-semibold">降低慢性病風險</span>  適量飲用咖啡可能與降低罹患第二型糖尿病、心血管疾病、中風、帕金森氏症和失智症的風險有關。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="pt-4">
+          <p class="text-xl text-gray-600 font-medium">
+           你知道嗎？聽說打翻咖啡比喝咖啡更能有效提振精神	
+          </p>
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="order-1 lg:order-2">
+        <div class="relative">
+          <div class="absolute inset-0 bg-[#77B65A]/20 rounded-2xl transform rotate-3"></div>
+          <div class="relative bg-white rounded-2xl overflow-hidden shadow-2xl">
+            <img
+              src={hocImage.src}
+              alt="Hour of Code 教學"
+              class="w-full h-auto"
+              loading="lazy"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="marquee-wrapper mt-10">
+		<div id="marquee" style={`background-image: url(${warring.src})`}></div>
+	</div>
+</section>
+
+<style>
+  #container {
+    padding: 6rem 0;
+  }
+
+  .marquee-wrapper {
+    overflow: hidden;
+    width: 100%;
+    line-height: 0;
+
+  }
+
+  #marquee {
+    --width: 20rem;
+    --height: 5rem;
+    width: calc(200vw);
+    height: var(--height);
+    background-size: auto var(--height);
+    background-repeat: repeat-x;
+    background-position: center;
+    animation: marquee 8s linear infinite;
+    display: block;
+  }
+
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (max-width: 768px) {
+    #container {
+      padding: 4rem 0;
+    }
+    
+    #marquee {
+      --width: 15rem;
+      --height: 4rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid {
+      gap: 2rem;
+    }
+  }
+</style>

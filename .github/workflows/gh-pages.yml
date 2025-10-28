@@ -1,0 +1,43 @@
+name: Deploy HoC site
+
+on:
+    push:
+        branches: [main]
+    workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        # Use --no-frozen-lockfile in CI to avoid failing when lockfile is missing
+        # or incompatible with the runner pnpm version. Prefer committing a
+        # matching pnpm-lock.yaml for reproducible installs.
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Build site
+        run: pnpm build
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages

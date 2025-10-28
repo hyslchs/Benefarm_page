@@ -1,0 +1,57 @@
+---
+import { Icon } from "astro-icon/components";
+import sitconLogo from "@assets/SITCON.svg";
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 bg-white/70 backdrop-blur-xl border-b border-gray-200 transition-all duration-300" id="header" style="backdrop-filter: blur(20px);">
+  <nav class="mx-auto px-6 py-4" style="max-width: 1200px;">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#" class="flex items-end gap-3 text-xl font-bold text-gray-900 transition-colors no-underline font-sans">
+        <img src={sitconLogo.src} alt="SITCON Logo" class="h-8 w-auto" />
+        <span>SITCON HoC</span>
+      </a>
+
+      <!-- Navigation -->
+      <div class="flex items-center gap-8">
+        <a href="#sessions" class="px-4 py-1 bg-[#77B65A] text-white rounded-full hover:bg-[var(--color-primary-dark)] font-medium transition-colors no-underline">立即報名</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Header scroll effect
+  let lastScroll = 0;
+  const header = document.getElementById('header');
+
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.pageYOffset;
+
+    if (currentScroll <= 0) {
+      header?.classList.remove('shadow-md');
+    } else {
+      header?.classList.add('shadow-md');
+    }
+
+    lastScroll = currentScroll;
+  });
+
+  // Smooth scroll for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      e.preventDefault();
+      const target = document.querySelector(anchor.getAttribute('href') || '');
+      if (target) {
+        const headerOffset = 80;
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+</script>

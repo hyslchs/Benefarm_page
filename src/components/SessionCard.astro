@@ -1,0 +1,430 @@
+---
+import { Icon } from "astro-icon/components";
+import 'add-to-calendar-button';
+
+interface Props {
+  title: string;
+  date: string; // Date in YYYY-MM-DD format
+  time: string; // Time range like "13:30 - 17:30"
+  location: string;
+  address?: string;
+  description?: string;
+  locationUrl?: string;
+  city?: string;
+  recruitUrl?: string; // URL for 工作人員招募
+  registerUrl?: string; // URL for 立即報名
+  telegramUrl?: string; // URL for 加入 Telegram
+  registrationStart?: string; // Registration start datetime (ISO 8601 format)
+  registrationEnd?: string; // Registration end datetime (ISO 8601 format)
+}
+
+const {
+  title,
+  date,
+  time,
+  location,
+  description,
+  locationUrl,
+  city,
+  address,
+  recruitUrl,
+  registerUrl,
+  telegramUrl,
+  registrationStart,
+  registrationEnd
+} = Astro.props;
+
+// Format date string (YYYY-MM-DD) for display
+function formatDate(dateStr: string): string {
+  const date = new Date(dateStr + 'T00:00:00+08:00'); // Parse as Taiwan time
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+  const weekday = weekdays[date.getDay()];
+
+  return `${year} 年 ${month} 月 ${day} 日（週${weekday}）`;
+}
+
+// Format ISO 8601 datetime for display (for registration dates)
+function formatDateTime(dateStr: string): string {
+  const date = new Date(dateStr);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const weekdays = ['日', '一', '二', '三', '四', '五', '六'];
+  const weekday = weekdays[date.getDay()];
+
+  return `${year} 年 ${month} 月 ${day} 日（週${weekday}）`;
+}
+
+const displayDate = date ? formatDate(date) : '';
+const displayRegistrationStart = registrationStart ? formatDateTime(registrationStart) : '';
+const displayRegistrationEnd = registrationEnd ? formatDateTime(registrationEnd) : '';
+
+// Helper to check if URL is valid (not "NA" or empty)
+const isValidUrl = (url?: string) => url && url !== 'NA' && url.trim() !== '';
+---
+
+<div class="session-card" data-city={city}>
+  <!-- Card Container -->
+  <div class="card-inner">
+    <!-- Title and Description -->
+    <div class="card-header">
+      <h3 class="card-title">{title}</h3>
+      {description && (
+        <p class="card-description">{description}</p>
+      )}
+    </div>
+
+    <!-- Divider -->
+    <div class="card-divider"></div>
+
+    <!-- Content Grid: Info (left) + Map (right) -->
+    <div class="card-content">
+      <!-- Left: Location and Time Info -->
+      <div class="info-section">
+        <!-- Location -->
+        <div class="info-item">
+          <Icon name="lucide:map-pin" class="info-icon" />
+          <div class="info-text">
+            <div>{location}</div>
+            {address && <div class="info-time-secondary">{address}</div>}
+          </div>
+        </div>
+
+        <!-- Date & Time -->
+        <div class="info-item">
+          <Icon name="lucide:clock" class="info-icon" />
+          <div class="info-text">
+            <div>{displayDate}</div>
+            <div class="info-time-secondary">{time}</div>
+          </div>
+        </div>
+
+        <!-- Registration Period -->
+        {registrationStart && registrationEnd && (
+          <div class="info-item">
+            <Icon name="lucide:calendar-check" class="info-icon" />
+            <div class="info-text">
+              <div>報名時間</div>
+              <div class="info-time-secondary">{displayRegistrationStart} ~ {displayRegistrationEnd}</div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <!-- Right: Google Maps Embed -->
+      {locationUrl && (
+        <div class="map-section">
+          <iframe
+            src={locationUrl}
+            class="map-embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title={`Map of ${location}`}
+          ></iframe>
+        </div>
+      )}
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div class="card-actions">
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        {recruitUrl && (
+          isValidUrl(recruitUrl) ? (
+            <a href={recruitUrl} class="action-button action-button-secondary" target="_blank" rel="noopener noreferrer">
+              <Icon name="lucide:users" class="button-icon" />
+              <span>助教招募</span>
+            </a>
+          ) : (
+            <button class="action-button action-button-secondary action-button-disabled" disabled>
+              <Icon name="lucide:users" class="button-icon" />
+              <span>助教招募</span>
+            </button>
+          )
+        )}
+
+        {registerUrl && (
+          isValidUrl(registerUrl) ? (
+            <a href={registerUrl} class="action-button action-button-primary" target="_blank" rel="noopener noreferrer">
+              <Icon name="lucide:user-plus" class="button-icon" />
+              <span>立即報名</span>
+            </a>
+          ) : (
+            <button class="action-button action-button-primary action-button-disabled" disabled>
+              <Icon name="lucide:user-plus" class="button-icon" />
+              <span>立即報名</span>
+            </button>
+          )
+        )}
+
+        {telegramUrl && (
+          isValidUrl(telegramUrl) ? (
+            <a href={telegramUrl} class="action-button action-button-telegram" target="_blank" rel="noopener noreferrer">
+              <Icon name="lucide:send" class="button-icon" />
+              <span>加入 Telegram</span>
+            </a>
+          ) : (
+            <button class="action-button action-button-telegram action-button-disabled" disabled>
+              <Icon name="lucide:send" class="button-icon" />
+              <span>加入 Telegram</span>
+            </button>
+          )
+        )}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .session-card {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .card-inner {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 16px;
+    border: 0.5px solid rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+  }
+
+
+  .card-header {
+    padding: 32px 32px 24px 32px;
+  }
+
+  .card-title {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: #1d1d1f;
+    margin: 0 0 12px 0;
+  }
+
+  .card-description {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #6e6e73;
+    margin: 0;
+  }
+
+  .card-divider {
+    height: 0.5px;
+    background: linear-gradient(90deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.08) 50%,
+      rgba(0, 0, 0, 0) 100%);
+    margin: 0 32px;
+  }
+
+  .card-content {
+    padding: 24px 32px 32px 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .info-icon {
+    width: 20px;
+    height: 20px;
+    color: #06c;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .info-text {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    color: #1d1d1f;
+    font-weight: 500;
+  }
+
+  .info-label {
+    font-size: 13px;
+    color: #6e6e73;
+    margin-bottom: 4px;
+  }
+
+  .info-time-secondary {
+    color: #6e6e73;
+    font-size: 14px;
+  }
+
+  .map-section {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 0.5px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .map-embed {
+    width: 100%;
+    height: 200px;
+    border: none;
+    display: block;
+  }
+
+  .card-actions {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .calendar-button-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .action-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: none;
+    cursor: pointer;
+  }
+
+  .button-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* Primary Button (立即報名) */
+  .action-button-primary {
+    background: #06c;
+    color: white;
+  }
+
+  .action-button-primary:hover {
+    background: #0077ed;
+    transform: translateY(-1px);
+  }
+
+  .action-button-primary:active {
+    transform: translateY(0);
+  }
+
+  /* Secondary Button (工作人員招募) */
+  .action-button-secondary {
+    background: rgba(0, 0, 0, 0.05);
+    color: #1d1d1f;
+  }
+
+  .action-button-secondary:hover {
+    background: rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .action-button-secondary:active {
+    transform: translateY(0);
+  }
+
+  /* Telegram Button */
+  .action-button-telegram {
+    background: #0088cc;
+    color: white;
+  }
+
+  .action-button-telegram:hover {
+    background: #009ae6;
+    transform: translateY(-1px);
+  }
+
+  .action-button-telegram:active {
+    transform: translateY(0);
+  }
+
+  /* Disabled Button */
+  .action-button-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .action-button-disabled:hover {
+    transform: none;
+  }
+
+  /* Responsive: Stack on mobile */
+  @media (max-width: 768px) {
+    .card-content {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .card-header {
+      padding: 24px 24px 20px 24px;
+    }
+
+    .card-title {
+      font-size: 24px;
+    }
+
+    .card-divider {
+      margin: 0 24px;
+    }
+
+    .card-content {
+      padding: 20px 24px 24px 24px;
+    }
+
+    .map-embed {
+      height: 180px;
+    }
+
+    .card-actions {
+      padding: 24px;
+    }
+
+    .action-buttons {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .action-button {
+      padding: 14px 20px;
+    }
+  }
+</style>
