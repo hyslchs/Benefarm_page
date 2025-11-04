@@ -1,0 +1,89 @@
+---
+import bg from "@assets/img/sun-dried-coffee.png";
+
+---
+
+<section
+  class="relative isolate"
+  aria-labelledby="video-section-title"
+  style={`--bg:url(${bg.src});`}
+>
+  <!-- 背景層 -->
+  <div
+    class="pointer-events-none absolute inset-0 -z-10 bg-cover bg-center"
+    style="background-image:var(--bg);"
+  ></div>
+  <div class="pointer-events-none absolute inset-0 -z-10 bg-black/40"></div>
+
+  <div class="mx-auto max-w-7xl px-4 py-16">
+    <h2 id="video-section-title" class="mb-8 text-center text-3xl font-bold text-white">
+      影片精選
+    </h2>
+
+    <!-- 三部影片置中排列 -->
+    <div
+      class="mx-auto grid w-full max-w-6xl grid-cols-1 place-items-center gap-6 md:grid-cols-3"
+    >
+      <!-- 第一部影片 -->
+      <div class="w-full max-w-[560px]">
+        <div class="ratio-16x9 rounded-2xl shadow-xl overflow-hidden ring-1 ring-white/10 bg-black/60">
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="第一支影片"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            class="abs-iframe"
+          ></iframe>
+        </div>
+        <p class="mt-3 text-center text-white/90 text-sm">第一支影片標題</p>
+      </div>
+
+      <!-- 第二部影片 -->
+      <div class="w-full max-w-[560px]">
+        <div class="ratio-16x9 rounded-2xl shadow-xl overflow-hidden ring-1 ring-white/10 bg-black/60">
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="第二支影片"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            class="abs-iframe"
+          ></iframe>
+        </div>
+        <p class="mt-3 text-center text-white/90 text-sm">第二支影片標題</p>
+      </div>
+
+      <!-- 第三部影片 -->
+      <div class="w-full max-w-[560px]">
+        <div class="ratio-16x9 rounded-2xl shadow-xl overflow-hidden ring-1 ring-white/10 bg-black/60">
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="第三支影片"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+            class="abs-iframe"
+          ></iframe>
+        </div>
+        <p class="mt-3 text-center text-white/90 text-sm">第三支影片標題</p>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    /* 16:9 外框（純 CSS） */
+    .ratio-16x9 {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 9/16 */
+    }
+    .abs-iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+  </style>
+</section>

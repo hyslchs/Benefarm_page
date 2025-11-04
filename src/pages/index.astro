@@ -7,8 +7,13 @@ import Intro from "../components/Intro.astro";
 import IntroHoC from "../components/IntroHoC.astro";
 import SessionsList from "../components/SessionsList.astro";
 import Footer from "../components/Footer.astro";
+import SidebarNav from "../components/SidebarNav.astro";
 import "../styles/global.css";
 import Faq from "@components/Faq.astro";
+import Form from "@components/Form.astro";
+import VideoSection from "@components/VideoSection.astro";
+
+
 ---
 
 <Layout
@@ -16,12 +21,15 @@ import Faq from "@components/Faq.astro";
 	description="資訊使用者行為探索..."
 >
 	<Header />
+	<SidebarNav />
 	<main>
 		<Hero />
 		<SubHero />
 		<Intro />
 		<IntroHoC />
 		<SessionsList />
+		<VideoSection />
+		<Form />
 		<Faq />
 	</main>
 	<Footer />

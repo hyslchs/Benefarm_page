@@ -1,0 +1,103 @@
+---
+// Minimal Astro component: basic demo-only survey (no i18n, no storage, no live stats)
+// Future-ready: uncomment the Google Form section when you want to wire it up.
+// Usage: save as src/components/SatisfactionSurvey.astro and <SatisfactionSurvey /> in a page.
+// const TITLE = "展覽滿意度調查（Demo）";
+// ===== Future Google Form wiring (placeholder) =====
+// const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/d/e/xxxxxxxxxxxxxxxx/formResponse";
+// const FIELD = {
+//   satisfaction: "entry.1111111111", // radio 1~5
+//   feedback:     "entry.2222222222", // textarea
+//   email:        "entry.3333333333", // optional
+// } as const;
+// ==================================================
+---
+
+<section id="survey-demo" class="survey">
+  <h2 class="title text-center mb-16">展覽滿意度調查</h2>
+
+  <!-- Demo-only: Replace name attributes with FIELD.xxx when wiring to Google Form -->
+  <!-- When ready: add action={GOOGLE_FORM_ACTION} method="POST" and map values to entry keys. -->
+  <form id="demo-form" class="card" novalidate>
+    <fieldset class="group">
+      <legend>整體滿意度 <span class="req">*</span></legend>
+      <div class="stars" role="radiogroup" aria-label="滿意度 1-5 星">
+        <label><input type="radio" name="satisfaction" value="1" required /><span>★</span></label>
+        <label><input type="radio" name="satisfaction" value="2" /><span>★</span></label>
+        <label><input type="radio" name="satisfaction" value="3" /><span>★</span></label>
+        <label><input type="radio" name="satisfaction" value="4" /><span>★</span></label>
+        <label><input type="radio" name="satisfaction" value="5" /><span>★</span></label>
+      </div>
+      <small class="hint">1 = 非常不滿意，5 = 非常滿意</small>
+    </fieldset>
+
+    <div class="group">
+      <label class="label" for="feedback">其他建議</label>
+      <textarea id="feedback" name="feedback" rows="4" placeholder="寫下你的看法…（Demo 不會上傳）"></textarea>
+    </div>
+
+    <div class="group">
+      <label class="label" for="email">Email</label>
+      <input id="email" name="email" type="email" placeholder="you@example.com" />
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn">送出</button>
+      <button type="reset" class="btn ghost">清除</button>
+      <span id="msg" class="msg" aria-live="polite"></span>
+    </div>
+  </form>
+</section>
+
+<script>
+  // Demo-only behavior: block network, show a friendly message
+  (function(){
+    const form = document.getElementById('demo-form');
+    const msg  = document.getElementById('msg');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const checked = form.querySelector('input[name="satisfaction"]:checked');
+      if (!checked) { msg.textContent = '請先選擇滿意度（必填）'; return; }
+      msg.textContent = '感謝您的填寫！。';
+    });
+  })();
+
+  /* ================== When ready for Google Form ==================
+  1) Remove the submit handler above (demo-only).
+  2) Set <form action={GOOGLE_FORM_ACTION} method="POST">.
+  3) Replace input names with FIELD.xxx keys using hidden inputs, e.g.:
+
+     <input type="hidden" name={FIELD.satisfaction} value="<!-- selected value -->" />
+
+     Or, on submit, build a FormData and POST fetch(GOOGLE_FORM_ACTION, { method:'POST', mode:'no-cors', body: formData })
+  ================================================================= */
+</script>
+
+<style>
+  :root {
+    --bg: #f6f7fb; --fg:#111827; --muted:#6b7280; --brand:#2563eb; --brand-2:#0ea5e9; --card:#fff; --ring:rgba(37,99,235,.25);
+  }
+  .survey { background: linear-gradient(var(--bg), #fff 8rem); padding: 2rem 1rem 3rem; }
+  .title { font-size: clamp(1.5rem, 2.5vw, 2rem); margin:.25rem 0; color:var(--fg); }
+  .sub { color:var(--muted); margin: 0 0 1rem; }
+  .card { max-width: 720px; margin: 0 auto; background:var(--card); border-radius: 16px; padding: 1.25rem; box-shadow: 0 10px 20px rgba(0,0,0,.06); }
+  .group { margin-bottom: 1rem; }
+  legend { font-weight:700; margin-bottom:.5rem; }
+  .label { display:block; font-weight:600; margin-bottom:.35rem; }
+  .hint { color:var(--muted); }
+  .req { color:#ef4444; }
+
+  .stars { display:inline-flex; gap:.15rem; font-size:1.35rem; }
+  .stars input { position:absolute; opacity:0; width:1px; height:1px; }
+  .stars label { cursor:pointer; padding:.15rem .2rem; border-radius:8px; transition:.15s ease; }
+  .stars label:hover { background: rgba(0,0,0,.04); }
+  .stars span { color:#f59e0b; }
+
+  input[type="email"], textarea { width:100%; border:1px solid #e5e7eb; border-radius:10px; padding:.6rem .7rem; outline:none; }
+  input[type="email"]:focus, textarea:focus { border-color: var(--brand); box-shadow: 0 0 0 4px var(--ring); }
+
+  .actions { display:flex; align-items:center; gap:.75rem; margin-top:.25rem; }
+  .btn { appearance:none; border:0; background: linear-gradient(135deg, var(--brand), var(--brand-2)); color:#fff; padding:.6rem 1rem; border-radius:999px; cursor:pointer; font-weight:700; }
+  .btn.ghost { background: transparent; color: var(--brand); border:1px solid var(--brand); }
+  .msg { color: var(--brand); min-height: 1lh; }
+</style>
