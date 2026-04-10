@@ -1,5 +1,6 @@
 # 這是什麼專案
-簡單來說就是學校某堂課程需要以網站形式規劃數位策展，內容、網頁設計由其他組員共同完成，本人採用 Astro 框架 + tailwind CSS 負責網頁製作
+簡單來說就是學校某堂課程需要以網站形式規劃數位策展
+內容、設計由其他組員共同完成，本人採用 Astro 框架 + tailwind CSS 負責網頁製作
 最終上線成品在這：https://infbehavior-design.github.io/FJU_Digital_Content_Curation/
 
 # Astro Starter Kit: Basics
